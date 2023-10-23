@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.lovetest.R
@@ -16,7 +18,7 @@ import com.example.lovetest.databinding.FragmentSelectionBinding
  * create an instance of this fragment.
  */
 
-class SelectionFragment : Fragment() {
+class SelectionFragment : Fragment(), View.OnClickListener {
 
     lateinit var navController: NavController
 
@@ -38,26 +40,29 @@ class SelectionFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
-        binding.option1.setOnClickListener {
-            navController.navigate(R.id.action_selectionFragment_to_resultFragment)
-        }
+        binding.btBack.setOnClickListener(this)
+        binding.option1.setOnClickListener(this)
+        binding.option2.setOnClickListener(this)
+        binding.option3.setOnClickListener(this)
+        binding.option4.setOnClickListener(this)
+    }
 
-        binding.option2.setOnClickListener {
-            navController.navigate(R.id.action_selectionFragment_to_resultFragment)
-        }
+    override fun onClick(v: View?){
 
-        binding.option3.setOnClickListener {
-            navController.navigate(R.id.action_selectionFragment_to_resultFragment)
+        when(v?.id){
+            R.id.option_1  -> {navigateWithIndex(1)}
+            R.id.option_2  -> {navigateWithIndex(2)}
+            R.id.option_3  -> {navigateWithIndex(3)}
+            R.id.option_4  -> {navigateWithIndex(4)}
+            R.id.bt_back  -> {
+                navController.popBackStack()
+            }
         }
+    }
 
-        binding.option4.setOnClickListener {
-            navController.navigate(R.id.action_selectionFragment_to_resultFragment)
-        }
-
-        binding.btBack.setOnClickListener {
-            navController.navigate(R.id.action_selectionFragment_to_questionFragment)
-        }
-
+    fun navigateWithIndex(index : Int){
+        val bundle = bundleOf("index" to index)
+        navController.navigate(R.id.action_selectionFragment_to_resultFragment, bundle)
     }
 
     override fun onDestroyView() {
@@ -65,5 +70,5 @@ class SelectionFragment : Fragment() {
         _binding = null
     }
 
-
 }
+
